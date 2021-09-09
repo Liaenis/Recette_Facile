@@ -15,14 +15,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AuthController extends ApiController
 {
 
-
+    /** 
+    * @Route("/register",name="api_register",methods="POST") 
+    */
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     { 
         $em = $this->getDoctrine()->getManager(); 
         $request = $this->transformJsonBody($request); 
         $username = $request->get('username'); 
         $password = $request->get('password'); 
-        if (empty($username) || empty($password)
+        if (empty($username) || empty($password))
         { 
             return $this->respondValidationError("Invalid Username or Password "); 
         } 
@@ -34,11 +36,12 @@ class AuthController extends ApiController
  }
 
     /** 
+    * @Route("/api/login_check",name="api_login_check",methods="POST") 
     * @param UserInterface $user 
-    * @param JWTTokenManagerInterface $JWTManager
+    * @param JWTTokenManagerInterface $JWTManager 
     * @return JsonResponse 
-    */ 
-  public function getTokenUser(UserInterface $user, JWTTokenManagerInterface $JWTManager)
+    */
+    public function getTokenUser(UserInterface $user, JWTTokenManagerInterface $JWTManager)
     { 
         return new JsonResponse(['token' => $JWTManager->create($user)]);
     }
